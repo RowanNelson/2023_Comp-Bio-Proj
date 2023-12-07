@@ -1,0 +1,7 @@
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000000815.fasta.gz
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/reference_proteomes/Bacteria/UP000001014/UP000001014_99287.fasta.gz
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000002493.fasta.gz
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000000756.fasta.gz
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000002515.fasta.gz
+https://rest.uniprot.org/uniparc/stream?compressed=true&format=fasta&query=%28%28upid%3AUP000034936%29+AND+%28proteomecomponent%3A%22Unassembled+WGS+sequence%22%29%29
+https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000005933.fasta.gz
