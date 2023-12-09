@@ -45,12 +45,12 @@ def read_hmm(file_path):
                 #Check if the line representsa match
                 if fields[0].isdigit():
                     #convert the log probabilities to regular probabilities
-                    probabilities = [10**(-float(p)) for p in fields[1:21]]
+                    probabilities = [np.exp(-float(p)) for p in fields[1:21]]
                     match_emissions.append(probabilities)
         return match_emissions
 
 def convert_probabilities_to_log(probabilities):
-    return [-np.log10(p) if p>0 else sys.float_info.max for p in probabilities]
+    return [-np.log(p) if p>0 else sys.float_info.max for p in probabilities]
 
 def write_modified_hmm(original_hmm, modified_em, output):
     with open(original_hmm, 'r') as original, open(output, 'w') as modified_hmm:
@@ -106,9 +106,13 @@ def main():
     P_t_reordered = reorder_matrix(P_t, current_order, target_order)
     #read hmm
     hmm_emissions = read_hmm(sys.argv[3])
-
+    modified = []
     #modify match states given our matrix
-    modified = [np.dot(probs, P_t) for probs in hmm_emissions]
+    for probs in hmm_emissions:
+        modified_probs = np.dot(probs, P_t_reordered)
+        #renormalize
+        modified_probs /= np.sum(modified_probs)
+        modified.append(modified_probs)
 
     #write back into original HMM format.
     write_modified_hmm(sys.argv[3], modified, 'modified_hmm.hmm')
