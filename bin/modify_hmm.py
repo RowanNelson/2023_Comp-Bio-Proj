@@ -28,6 +28,11 @@ def convert_to_matrix(rates):
             index += 1
     return matrix
 
+def format_fields(fields, probs):
+    formatted_fields = "{:>7}   ".format(fields[0])
+    formatted_fields += "  ".join("{:>3.5f}".format(p) for p in probs)
+    return formatted_fields
+
 def read_hmm(file_path):
     with open(file_path, 'r') as file:
         #skip header
@@ -67,8 +72,14 @@ def write_modified_hmm(original_hmm, modified_em, output):
                 break
             if start_modifying and not line.isspace():
                 fields = line.strip().split()
+                last_five = None
                 if fields[0].isdigit() and match_state_index < len(modified_em):
-                    new_line = ' '.join([fields[0]] + [f"{p:.6f}" for p in convert_probabilities_to_log(modified_em[match_state_index])]) + '\n'
+                    if last_five is None:
+                        last_five = fields[-5:]
+
+                    new_line = format_fields(fields, modified_em[match_state_index])
+                    new_line += "      "
+                    new_line += ' '.join(last_five) + '\n'
                     modified_hmm.write(new_line)
                     match_state_index += 1
                 else:
@@ -91,13 +102,10 @@ def main():
     for i in range(20):
         Q[i,i] = -np.sum(Q[i,:])*normalized_frequencies[i]
 
-    print(Q)
-    print(normalized_frequencies)
-
+ 
     #exponentiate our Q to find P(t)
-    t = 0.5
+    t = 0.1
     P_t = expm(Q * t)
-    print(P_t)
 
     #Reorder P_t since it's in a different order than the hmm
     current_order = ["A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V"]
@@ -111,7 +119,7 @@ def main():
     for probs in hmm_emissions:
         modified_probs = np.dot(probs, P_t_reordered)
         #renormalize
-        modified_probs /= np.sum(modified_probs)
+        #modified_probs /= np.sum(modified_probs)
         modified.append(modified_probs)
 
     #write back into original HMM format.
