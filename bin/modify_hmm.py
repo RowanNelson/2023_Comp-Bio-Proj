@@ -10,6 +10,8 @@ def read_aa_frequencies(file_path):
 def reorder_matrix(matrix, current_order, target_order):
     index_map = [current_order.index(aa) for aa in target_order]
     reordered_matrix = matrix[:, index_map][index_map]
+    print(f"Original matrix: \n{matrix}\n")
+    print(f"Reordered: \n{reordered_matrix}\n")
     return reordered_matrix
 
 def read_lg_model(file_path):
@@ -49,8 +51,10 @@ def read_hmm(file_path):
                 fields = line.strip().split()
                 #Check if the line representsa match
                 if fields[0].isdigit():
+                    probs = fields[1:21]
                     #convert the log probabilities to regular probabilities
                     probabilities = [np.exp(-float(p)) for p in fields[1:21]]
+                    print(f"Probabilities: {sum(probabilities)}")
                     match_emissions.append(probabilities)
         return match_emissions
 
@@ -119,7 +123,10 @@ def main():
     for probs in hmm_emissions:
         modified_probs = np.dot(probs, P_t_reordered)
         #renormalize
-        #modified_probs /= np.sum(modified_probs)
+        modified_probs /= np.sum(modified_probs)
+
+        print(f"Modified probs sum: f{sum(modified_probs)}")
+        modified_probs = convert_probabilities_to_log(modified_probs)
         modified.append(modified_probs)
 
     #write back into original HMM format.
