@@ -1,0 +1,3 @@
+https://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000002515.fasta.gz
+https://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000001010.fasta.gz
+https://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/pan_proteomes/UP000005933.fasta.gz
